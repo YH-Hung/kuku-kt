@@ -15,4 +15,8 @@ class ProductServiceImpl(val productDao: ProductDao) : ProductService {
     override fun createProduct(productRequest: ProductRequest): Int? {
         return productDao.createProduct(productRequest)
     }
+
+    override fun updateProduct(productId: Int, productRequest: ProductRequest) {
+        productDao.updateProduct(productId, productRequest)
+    }
 }

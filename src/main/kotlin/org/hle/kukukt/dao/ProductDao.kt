@@ -8,4 +8,6 @@ interface ProductDao {
     fun getProductById(productId: Int): Product?
 
     fun createProduct(productRequest: ProductRequest): Int?
+
+    fun updateProduct(productId: Int, productRequest: ProductRequest)
 }

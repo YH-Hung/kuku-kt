@@ -4,13 +4,11 @@ import org.hle.kukukt.dao.ProductDao
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 import org.hle.kukukt.rowmapper.ProductRowMapper
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.support.GeneratedKeyHolder
-import org.springframework.jdbc.support.KeyHolder
 import org.springframework.stereotype.Repository
-import java.util.Date
+import java.util.*
 
 @Repository
 class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao {
@@ -44,5 +42,22 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
         jdbcTemplate.update(sql, MapSqlParameterSource(map), keyHolder)
 
         return keyHolder.key?.toInt()
+    }
+
+    override fun updateProduct(productId: Int, productRequest: ProductRequest) {
+        val sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
+                "price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate " +
+                "WHERE product_id = :productId"
+
+        val map = mapOf("productId" to productId,
+            "productName" to productRequest.productName,
+            "category" to productRequest.category.name,
+            "imageUrl" to productRequest.imageUrl,
+            "price" to productRequest.price,
+            "stock" to productRequest.stock,
+            "description" to productRequest.description,
+            "lastModifiedDate" to Date())
+
+        jdbcTemplate.update(sql, map)
     }
 }

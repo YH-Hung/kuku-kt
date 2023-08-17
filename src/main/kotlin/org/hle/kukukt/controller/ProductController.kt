@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -35,5 +36,23 @@ class ProductController(val productService: ProductService) {
         } else {
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
         }
+    }
+
+    @PutMapping("/products/{productId}")
+    fun updateProduct(
+        @PathVariable productId: Int,
+        @RequestBody @Valid productRequest: ProductRequest
+    ): ResponseEntity<Product> {
+        val product = productService.getProductById(productId)
+        if (product == null) ResponseEntity.status(HttpStatus.NOT_FOUND).build<Product>()
+
+        productService.updateProduct(productId, productRequest)
+
+        val updatedProduct = productService.getProductById(productId)
+
+        return if (updatedProduct != null)
+            ResponseEntity.status(HttpStatus.OK).body(updatedProduct)
+        else
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
     }
 }
