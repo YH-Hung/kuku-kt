@@ -15,5 +15,6 @@ class ProductRowMapper : RowMapper<Product> {
         rs.getInt("stock"),
         rs.getString("description"),
         rs.getTimestamp("created_date"),
-        rs.getTimestamp("last_modified_date"))
+        rs.getTimestamp("last_modified_date")
+    )
 }

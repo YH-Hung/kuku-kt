@@ -13,4 +13,4 @@ class Product(
     val description: String?,
     val createdDate: Date,
     val lastModifiedDate: Date
-    )
+)
