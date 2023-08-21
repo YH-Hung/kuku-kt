@@ -1,10 +1,11 @@
 package org.hle.kukukt.dao
 
+import org.hle.kukukt.constant.ProductCategory
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 
 interface ProductDao {
-    fun getProducts(): List<Product>
+    fun getProducts(category: ProductCategory?, search: String?): List<Product>
 
     fun getProductById(productId: Int): Product?
 

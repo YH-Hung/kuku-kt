@@ -1,6 +1,7 @@
 package org.hle.kukukt.controller
 
 import jakarta.validation.Valid
+import org.hle.kukukt.constant.ProductCategory
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 import org.hle.kukukt.service.ProductService
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -19,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController
 class ProductController(val productService: ProductService) {
 
     @GetMapping
-    fun getProducts(): ResponseEntity<List<Product>> {
-        val productList = productService.getProducts()
+    fun getProducts(
+        @RequestParam category: ProductCategory?,
+        @RequestParam search: String?
+    ): ResponseEntity<List<Product>> {
+        val productList = productService.getProducts(category, search)
 
         return ResponseEntity.status(HttpStatus.OK).body(productList)
     }
