@@ -11,12 +11,21 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/products")
 class ProductController(val productService: ProductService) {
 
-    @GetMapping("/products/{productId}")
+    @GetMapping
+    fun getProducts(): ResponseEntity<List<Product>> {
+        val productList = productService.getProducts()
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList)
+    }
+
+    @GetMapping("/{productId}")
     fun getProduct(@PathVariable productId: Int): ResponseEntity<Product> {
         val product = productService.getProductById(productId)
 
@@ -26,7 +35,7 @@ class ProductController(val productService: ProductService) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
     }
 
-    @PostMapping("/products")
+    @PostMapping
     fun createProduct(@RequestBody @Valid productRequest: ProductRequest): ResponseEntity<Product> {
         val productId = productService.createProduct(productRequest)
 
@@ -38,7 +47,7 @@ class ProductController(val productService: ProductService) {
         }
     }
 
-    @PutMapping("/products/{productId}")
+    @PutMapping("/{productId}")
     fun updateProduct(
         @PathVariable productId: Int,
         @RequestBody @Valid productRequest: ProductRequest

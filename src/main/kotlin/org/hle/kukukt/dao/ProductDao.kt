@@ -4,6 +4,7 @@ import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 
 interface ProductDao {
+    fun getProducts(): List<Product>
 
     fun getProductById(productId: Int): Product?
 

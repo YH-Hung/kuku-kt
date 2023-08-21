@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductServiceImpl(val productDao: ProductDao) : ProductService {
+    override fun getProducts(): List<Product> {
+        return productDao.getProducts()
+    }
+
     override fun getProductById(productId: Int): Product? {
         return productDao.getProductById(productId)
     }

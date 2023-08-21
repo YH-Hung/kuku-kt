@@ -12,6 +12,12 @@ import java.util.*
 
 @Repository
 class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao {
+    override fun getProducts(): List<Product> {
+        val sql = "SELECT product_id, product_name, category, image_url, price, stock, description, created_date," +
+                " last_modified_date FROM product"
+
+        return jdbcTemplate.query(sql, ProductRowMapper())
+    }
 
     override fun getProductById(productId: Int): Product? {
         val sql = "SELECT product_id, product_name, category, image_url, price, stock, description, created_date," +
