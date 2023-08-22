@@ -1,7 +1,7 @@
 package org.hle.kukukt.dao.impl
 
-import org.hle.kukukt.constant.ProductCategory
 import org.hle.kukukt.dao.ProductDao
+import org.hle.kukukt.dto.ProductQueryParams
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 import org.hle.kukukt.rowmapper.ProductRowMapper
@@ -13,15 +13,15 @@ import java.util.*
 
 @Repository
 class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao {
-    override fun getProducts(category: ProductCategory?, search: String?): List<Product> {
+    override fun getProducts(queryParam: ProductQueryParams): List<Product> {
         val sb = StringBuilder()
         sb.append("SELECT product_id, product_name, category, image_url, price, stock, description, created_date,")
         sb.append(" last_modified_date FROM product WHERE 1 = 1")
 
-        if (category != null) sb.append(" AND category = :category")
-        if (search != null) sb.append(" AND product_name LIKE :search")
+        if (queryParam.category != null) sb.append(" AND category = :category")
+        if (queryParam.search != null) sb.append(" AND product_name LIKE :search")
 
-        val map = mapOf("category" to category?.name, "search" to "%$search%")
+        val map = mapOf("category" to queryParam.category?.name, "search" to "%${queryParam.search}%")
 
         return jdbcTemplate.query(sb.toString(), map, ProductRowMapper())
     }

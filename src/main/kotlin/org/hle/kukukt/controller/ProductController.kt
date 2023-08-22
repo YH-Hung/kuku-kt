@@ -2,6 +2,7 @@ package org.hle.kukukt.controller
 
 import jakarta.validation.Valid
 import org.hle.kukukt.constant.ProductCategory
+import org.hle.kukukt.dto.ProductQueryParams
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 import org.hle.kukukt.service.ProductService
@@ -25,7 +26,8 @@ class ProductController(val productService: ProductService) {
         @RequestParam category: ProductCategory?,
         @RequestParam search: String?
     ): ResponseEntity<List<Product>> {
-        val productList = productService.getProducts(category, search)
+        val queryParam = ProductQueryParams(category, search)
+        val productList = productService.getProducts(queryParam)
 
         return ResponseEntity.status(HttpStatus.OK).body(productList)
     }

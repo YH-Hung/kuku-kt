@@ -1,7 +1,7 @@
 package org.hle.kukukt.service.impl
 
-import org.hle.kukukt.constant.ProductCategory
 import org.hle.kukukt.dao.ProductDao
+import org.hle.kukukt.dto.ProductQueryParams
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
 import org.hle.kukukt.service.ProductService
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductServiceImpl(val productDao: ProductDao) : ProductService {
-    override fun getProducts(category: ProductCategory?, search: String?): List<Product> {
-        return productDao.getProducts(category, search)
+    override fun getProducts(queryParam: ProductQueryParams): List<Product> {
+        return productDao.getProducts(queryParam)
     }
 
     override fun getProductById(productId: Int): Product? {
