@@ -6,6 +6,8 @@ class ProductQueryParams(
     val category: ProductCategory?,
     val search: String?,
     val orderBy: String,
-    val sort: String
+    val sort: String,
+    val limit: Int,
+    val offset: Int
 ) {
 }

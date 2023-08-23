@@ -21,8 +21,14 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
         if (queryParam.category != null) sb.append(" AND category = :category")
         if (queryParam.search != null) sb.append(" AND product_name LIKE :search")
         sb.append(" ORDER BY ${queryParam.orderBy} ${queryParam.sort}")
+        sb.append(" LIMIT :limit OFFSET :offset")
 
-        val map = mapOf("category" to queryParam.category?.name, "search" to "%${queryParam.search}%")
+        val map = mapOf(
+            "category" to queryParam.category?.name,
+            "search" to "%${queryParam.search}%",
+            "limit" to queryParam.limit,
+            "offset" to queryParam.offset
+        )
 
         return jdbcTemplate.query(sb.toString(), map, ProductRowMapper())
     }
@@ -38,18 +44,21 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
     }
 
     override fun createProduct(productRequest: ProductRequest): Int? {
-        val sql = "INSERT INTO product(product_name, category, image_url, price, stock, description, created_date, last_modified_date) " +
-                "VALUES(:productName, :category, :imageUrl, :price, :stock, :description, :createdDate, :lastModifiedDate)"
+        val sql =
+            "INSERT INTO product(product_name, category, image_url, price, stock, description, created_date, last_modified_date) " +
+                    "VALUES(:productName, :category, :imageUrl, :price, :stock, :description, :createdDate, :lastModifiedDate)"
 
         val now = Date()
-        val map = mapOf("productName" to productRequest.productName,
+        val map = mapOf(
+            "productName" to productRequest.productName,
             "category" to productRequest.category.name,
             "imageUrl" to productRequest.imageUrl,
             "price" to productRequest.price,
             "stock" to productRequest.stock,
             "description" to productRequest.description,
             "createdDate" to now,
-            "lastModifiedDate" to now)
+            "lastModifiedDate" to now
+        )
 
         val keyHolder = GeneratedKeyHolder()
 
@@ -63,14 +72,16 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
                 "price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate " +
                 "WHERE product_id = :productId"
 
-        val map = mapOf("productId" to productId,
+        val map = mapOf(
+            "productId" to productId,
             "productName" to productRequest.productName,
             "category" to productRequest.category.name,
             "imageUrl" to productRequest.imageUrl,
             "price" to productRequest.price,
             "stock" to productRequest.stock,
             "description" to productRequest.description,
-            "lastModifiedDate" to Date())
+            "lastModifiedDate" to Date()
+        )
 
         jdbcTemplate.update(sql, map)
     }

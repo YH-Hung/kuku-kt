@@ -1,6 +1,8 @@
 package org.hle.kukukt.controller
 
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import org.hle.kukukt.constant.ProductCategory
 import org.hle.kukukt.dto.ProductQueryParams
 import org.hle.kukukt.dto.ProductRequest
@@ -8,6 +10,7 @@ import org.hle.kukukt.model.Product
 import org.hle.kukukt.service.ProductService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@Validated
 @RequestMapping("/products")
 class ProductController(val productService: ProductService) {
 
@@ -26,9 +30,11 @@ class ProductController(val productService: ProductService) {
         @RequestParam category: ProductCategory?,
         @RequestParam search: String?,
         @RequestParam(required = false, defaultValue = "created_date") orderBy: String,
-        @RequestParam(required = false, defaultValue = "desc") sort: String
+        @RequestParam(required = false, defaultValue = "desc") sort: String,
+        @RequestParam(required = false, defaultValue = "5") @Max(1000) @Min(0) limit: Int,
+        @RequestParam(required = false, defaultValue = "0") @Min(0) offset: Int
     ): ResponseEntity<List<Product>> {
-        val queryParam = ProductQueryParams(category, search, orderBy, sort)
+        val queryParam = ProductQueryParams(category, search, orderBy, sort, limit, offset)
         val productList = productService.getProducts(queryParam)
 
         return ResponseEntity.status(HttpStatus.OK).body(productList)
