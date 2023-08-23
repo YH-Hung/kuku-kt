@@ -24,9 +24,11 @@ class ProductController(val productService: ProductService) {
     @GetMapping
     fun getProducts(
         @RequestParam category: ProductCategory?,
-        @RequestParam search: String?
+        @RequestParam search: String?,
+        @RequestParam(required = false, defaultValue = "created_date") orderBy: String,
+        @RequestParam(required = false, defaultValue = "desc") sort: String
     ): ResponseEntity<List<Product>> {
-        val queryParam = ProductQueryParams(category, search)
+        val queryParam = ProductQueryParams(category, search, orderBy, sort)
         val productList = productService.getProducts(queryParam)
 
         return ResponseEntity.status(HttpStatus.OK).body(productList)

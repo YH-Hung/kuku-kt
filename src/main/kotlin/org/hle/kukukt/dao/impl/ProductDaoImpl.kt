@@ -20,6 +20,7 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
 
         if (queryParam.category != null) sb.append(" AND category = :category")
         if (queryParam.search != null) sb.append(" AND product_name LIKE :search")
+        sb.append(" ORDER BY ${queryParam.orderBy} ${queryParam.sort}")
 
         val map = mapOf("category" to queryParam.category?.name, "search" to "%${queryParam.search}%")
 
