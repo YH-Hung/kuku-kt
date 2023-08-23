@@ -13,6 +13,10 @@ class ProductServiceImpl(val productDao: ProductDao) : ProductService {
         return productDao.getProducts(queryParam)
     }
 
+    override fun countProduct(queryParam: ProductQueryParams): Int {
+        return productDao.countProduct(queryParam)
+    }
+
     override fun getProductById(productId: Int): Product? {
         return productDao.getProductById(productId)
     }

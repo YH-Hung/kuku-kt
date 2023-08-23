@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import org.hle.kukukt.constant.ProductCategory
+import org.hle.kukukt.dto.PagedResponse
 import org.hle.kukukt.dto.ProductQueryParams
 import org.hle.kukukt.dto.ProductRequest
 import org.hle.kukukt.model.Product
@@ -33,11 +34,14 @@ class ProductController(val productService: ProductService) {
         @RequestParam(required = false, defaultValue = "desc") sort: String,
         @RequestParam(required = false, defaultValue = "5") @Max(1000) @Min(0) limit: Int,
         @RequestParam(required = false, defaultValue = "0") @Min(0) offset: Int
-    ): ResponseEntity<List<Product>> {
+    ): ResponseEntity<PagedResponse<Product>> {
         val queryParam = ProductQueryParams(category, search, orderBy, sort, limit, offset)
         val productList = productService.getProducts(queryParam)
+        val total = productService.countProduct(queryParam)
 
-        return ResponseEntity.status(HttpStatus.OK).body(productList)
+        val page = PagedResponse(limit, offset, total, productList)
+
+        return ResponseEntity.status(HttpStatus.OK).body(page)
     }
 
     @GetMapping("/{productId}")

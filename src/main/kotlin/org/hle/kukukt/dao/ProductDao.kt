@@ -6,6 +6,7 @@ import org.hle.kukukt.model.Product
 
 interface ProductDao {
     fun getProducts(queryParam: ProductQueryParams): List<Product>
+    fun countProduct(queryParam: ProductQueryParams): Int
 
     fun getProductById(productId: Int): Product?
 

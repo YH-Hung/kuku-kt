@@ -33,6 +33,21 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
         return jdbcTemplate.query(sb.toString(), map, ProductRowMapper())
     }
 
+    override fun countProduct(queryParam: ProductQueryParams): Int {
+        val sb = StringBuilder()
+        sb.append("SELECT count(*) FROM product WHERE 1 = 1")
+
+        if (queryParam.category != null) sb.append(" AND category = :category")
+        if (queryParam.search != null) sb.append(" AND product_name LIKE :search")
+
+        val map = mapOf(
+            "category" to queryParam.category?.name,
+            "search" to "%${queryParam.search}%"
+        )
+
+        return jdbcTemplate.queryForObject(sb.toString(), map, Int::class.java)!!
+    }
+
     override fun getProductById(productId: Int): Product? {
         val sql = "SELECT product_id, product_name, category, image_url, price, stock, description, created_date," +
                 " last_modified_date FROM product WHERE product_id = :productId"
