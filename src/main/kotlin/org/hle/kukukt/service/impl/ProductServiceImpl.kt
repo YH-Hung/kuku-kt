@@ -28,4 +28,8 @@ class ProductServiceImpl(val productDao: ProductDao) : ProductService {
     override fun updateProduct(productId: Int, productRequest: ProductRequest) {
         productDao.updateProduct(productId, productRequest)
     }
+
+    override fun deleteProductById(productId: Int) {
+        productDao.deleteProductById(productId)
+    }
 }

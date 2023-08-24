@@ -13,4 +13,6 @@ interface ProductDao {
     fun createProduct(productRequest: ProductRequest): Int?
 
     fun updateProduct(productId: Int, productRequest: ProductRequest)
+
+    fun deleteProductById(productId: Int)
 }

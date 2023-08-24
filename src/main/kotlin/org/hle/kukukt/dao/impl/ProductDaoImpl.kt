@@ -100,4 +100,11 @@ class ProductDaoImpl(val jdbcTemplate: NamedParameterJdbcTemplate) : ProductDao 
 
         jdbcTemplate.update(sql, map)
     }
+
+    override fun deleteProductById(productId: Int) {
+        val sql = "DELETE FROM product WHERE product_id = :productId"
+        val map = mapOf("productId" to productId)
+
+        jdbcTemplate.update(sql, map)
+    }
 }
