@@ -9,7 +9,7 @@ import javax.sql.DataSource
 @Configuration
 class DataSourceConfig {
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.mariadb")
     fun mariadbDataSourceProperties(): DataSourceProperties {
         return DataSourceProperties()
     }
@@ -17,5 +17,16 @@ class DataSourceConfig {
     @Bean
     fun mariadbDataSource(): DataSource {
         return mariadbDataSourceProperties().initializeDataSourceBuilder().build()
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.postgres")
+    fun postgresDataSourceProperties(): DataSourceProperties {
+        return DataSourceProperties()
+    }
+
+    @Bean
+    fun postgresDataSource(): DataSource {
+        return postgresDataSourceProperties().initializeDataSourceBuilder().build()
     }
 }
