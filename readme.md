@@ -5,7 +5,6 @@
 Assessing the implementation details for following items.
 
 - Compatibility of Kotlin and Spring MVC
-- Polyglot (Kotlin and Java)
 - Multiple datasource with different drivers (MariaDB and Postgres)
 - Provide data base url and password via environment variables
 

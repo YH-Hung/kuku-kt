@@ -1,16 +1,14 @@
-package org.hle.kukukt.config;
+package org.hle.kukukt.config
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
-import javax.sql.DataSource;
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import javax.sql.DataSource
 
 @Configuration
-public class JdbcTemplateConfig {
-
+class JdbcTemplateConfig {
     @Bean
-    public NamedParameterJdbcTemplate mariadbNamedParameterJdbcTemplate(DataSource dataSource) {
-        return new NamedParameterJdbcTemplate(dataSource);
+    fun mariadbNamedParameterJdbcTemplate(dataSource: DataSource): NamedParameterJdbcTemplate {
+        return NamedParameterJdbcTemplate(dataSource)
     }
 }
